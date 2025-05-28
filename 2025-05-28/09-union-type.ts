@@ -127,9 +127,6 @@ function calculate(shape: Shape): number {
 			return shape.side * shape.side;
 		case "circle":
 			return Math.PI * shape.radius * shape.radius;
-		default:
-			const _exhaustiveCheck: never = shape;
-			throw new Error("Unhandled shape type");
 	}
 }
 
