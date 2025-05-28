@@ -10,10 +10,10 @@ function processInput(input: number[] | string[] | { message: string }) {
 		} else if (typeof input[0] === "string") {
 			return (input as string[]).join("");
 		}
-	} else if (typeof input === "object" && "message" in input)
+	} else if (typeof input === "object" && "message" in input) {
 		return input.message.toUpperCase();
-	else {
-		throw new Error("올바르지 않은 입력형식입니다.");
+	} else {
+		throw new Error("올바르지 않은 입력 형식입니다.");
 	}
 }
 
@@ -21,7 +21,11 @@ function processInput(input: number[] | string[] | { message: string }) {
 console.log(processInput([1, 2, 3])); // 6
 console.log(processInput(["hello", "world"])); // "helloworld"
 console.log(processInput({ message: "TypeScript" })); // "TYPESCRIPT"
-// console.log(processInput(42)); // 에러 발생
+try {
+	console.log(processInput(42)); // 에러 발생
+} catch (error) {
+	console.error("Error:", error.message);
+}
 
 /*
  ✅ 문제 2
@@ -57,7 +61,11 @@ const myBike = new Bike("Mountain");
 
 console.log(processVehicle(myCar)); // "TESLA"
 console.log(processVehicle(myBike)); // "Bike: Mountain"
-// console.log(processVehicle("unknown")); // 에러 발생
+try {
+	console.log(processVehicle("unknown")); // 에러 발생
+} catch (error) {
+	console.error("Error:", error.message);
+}
 
 /*
  ✅ 문제 3
@@ -73,9 +81,9 @@ type User = {
 };
 
 function processUser(user: Admin | User): string {
-	if (user.type === "admin") {
+	if ("permissions" in user) {
 		return user.permissions.join(",");
-	} else if (user.type === "user") {
+	} else if ("email" in user) {
 		return user.email;
 	}
 	throw new Error("올바르지 않은 사용자입니다.");
@@ -83,7 +91,12 @@ function processUser(user: Admin | User): string {
 
 console.log(processUser({ type: "admin", permissions: ["read", "write"] }));
 console.log(processUser({ type: "user", email: "user@example.com" }));
-// console.log(processUser({ type: "guest" }));
+
+try {
+	console.log(processUser({ type: "guest" })); // 에러
+} catch (error) {
+	console.error("Error:", error.message);
+}
 
 /*
  ✅ 문제 4
@@ -95,10 +108,8 @@ type Circle = { radius: number };
 // 사용자 정의 타입 가드
 function isRectangle(shape: unknown): shape is Rectangle {
 	return (
-		typeof shape === "object" &&
-		shape !== null &&
-		"width" in shape &&
-		"height" in shape
+		(shape as Rectangle).width !== undefined &&
+		(shape as Rectangle).height !== undefined
 	);
 }
 
@@ -127,8 +138,19 @@ function calculate(shape: Shape): number {
 			return shape.side * shape.side;
 		case "circle":
 			return Math.PI * shape.radius * shape.radius;
+		default:
+			exhaustiveCheck(shape);
+			return 0;
 	}
 }
+function exhaustiveCheck(params: never) {
+	throw new Error("매개변수 타입을 확인해주세요");
+}
+console.log(calculate({ type: "square", side: 5 }));
+console.log(calculate({ type: "circle", radius: 7 }));
 
-console.log(calculateArea({ type: "square", side: 5 })); // 25
-console.log(calculateArea({ type: "circle", radius: 7 })); // 153.93804002589985
+try {
+	console.log(calculate({ type: "glgl" }));
+} catch (error) {
+	console.error("Error:", error.message);
+}
