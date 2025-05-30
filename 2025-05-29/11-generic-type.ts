@@ -1,6 +1,6 @@
 // 🚀 문제1 .
 // 매개변수, 리턴타입 정의 필요
-function getFirstElement<T>(array: T[]): T {
+function getFirstElement<T>(array: T[]): T | undefined {
 	return array[0];
 }
 
@@ -66,10 +66,12 @@ console.log(createObject("name", "Alice")); // { name: "Alice" }
 
 // 🚀 문제 6.
 
-function pluck(array: { [key: string]: any }[], key: string): any[] {
-	return array.map((obj) => obj[key]);
+// 매개변수, 리턴 타입 정의 필요
+function pluck<T, K extends keyof T>(array: T[], key: K): T[K][] {
+	return array.map((item) => item[key]);
 }
 
+// 테스트 코드
 const users = [
 	{ id: 1, name: "Alice" },
 	{ id: 2, name: "Bob" },

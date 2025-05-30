@@ -41,3 +41,15 @@ function createObject(key, value) {
 // 테스트 코드
 console.log(createObject("id", 123)); // { id: 123 }
 console.log(createObject("name", "Alice")); // { name: "Alice" }
+// 🚀 문제 6.
+// 매개변수, 리턴 타입 정의 필요
+function pluck(array, key) {
+    return array.map(function (item) { return item[key]; });
+}
+// 테스트 코드
+var users = [
+    { id: 1, name: "Alice" },
+    { id: 2, name: "Bob" },
+];
+console.log(pluck(users, "id")); // [1, 2]
+console.log(pluck(users, "name")); // ["Alice", "Bob"]
