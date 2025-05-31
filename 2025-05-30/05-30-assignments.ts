@@ -93,9 +93,11 @@ type TeamMember = {
 };
 
 // 1. `createTeamMember` 함수 작성
-function createTeamMember(data: Partial<TeamMember>): TeamMember {
+function createTeamMember(
+	data: Partial<TeamMember> & Pick<TeamMember, "id">
+): TeamMember {
 	return {
-		id: data.id ?? 0,
+		id: data.id,
 		name: data.name ?? "",
 		email: data.email ?? "",
 		role: data.role ?? "developer",
@@ -169,7 +171,7 @@ console.log(sanitizedMembers);
 
 console.log("---------- record 타입 과제 -----------");
 
-// 14. record 타입 과제제
+// 14. record 타입 과제
 
 // 🚀 문제 1. 전자상거래 플랫폼에서 지역 코드에 따른 배송비를 계산하는 로직을 작성하세요.
 
@@ -185,12 +187,15 @@ const shippingCosts: Record<RegionCode, number> = {
 };
 
 // 배송비 계산 함수 작성
+// costs객체안에 region 키의 존재 여부 확인하는게 지역코드 에러 상황 확인에 더 확실
+
+// fail 수정 후 재제출
 function calculateShippingCost(
 	region: RegionCode,
 	costs: Record<RegionCode, number>
 ): number {
-	if (costs[region] === undefined) {
-		throw new Error("올바르지 않은 지역코드입니다.");
+	if (!(region in costs)) {
+		throw new Error(`Unsupported region code: ${region}`);
 	}
 	return costs[region];
 }
@@ -200,7 +205,11 @@ console.log(calculateShippingCost("US", shippingCosts)); // 10
 console.log(calculateShippingCost("EU", shippingCosts)); // 15
 console.log(calculateShippingCost("ASIA", shippingCosts)); // 20
 console.log(calculateShippingCost("AFRICA", shippingCosts)); // 25
-// console.log(calculateShippingCost("AUSTRALIA", shippingCosts)); // 에러 발생
+try {
+	console.log(calculateShippingCost("AUSTRALIA" as RegionCode, shippingCosts)); // 에러 발생
+} catch (error) {
+	console.error(error.message); // "Unsupported region code: AUSTRALIA"
+}
 
 // 🚀 2. 학생들의 점수를 기록하고 평균 점수를 계산하는 문제입니다.
 
