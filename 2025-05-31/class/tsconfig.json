@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES6", // 컴파일된 JavaScript가 어떤 버전의 ECMAScript를 따를지 지정 (ES6은 2015년 버전, let/const, 화살표 함수 등 지원)
+		"module": "ESNext", // import/export를 어떤 모듈 시스템으로 처리할지 지정 (ESNext는 최신 ESM 모듈 사용, Vite/Next.js 등에서 주로 사용)
+		"moduleResolution": "node", // 모듈을 어떻게 찾을지 결정 (Node.js처럼 폴더 내 index.ts, node_modules 등을 기준으로 탐색)
+		"esModuleInterop": true, // CommonJS 모듈(`require`)을 ES Module 방식(`import`)으로 깔끔하게 불러올 수 있게 함
+		"forceConsistentCasingInFileNames": true, // 대소문자 일관성 검사: import 시 대소문자가 실제 파일명과 다르면 오류 발생 (리눅스 환경에서 유용)
+		"strict": true, // 엄격한 타입 검사 옵션을 모두 활성화 (`noImplicitAny`, `strictNullChecks` 등 포함)
+		"skipLibCheck": true, // node_modules 내부의 `.d.ts` 타입 정의 파일은 타입 검사 생략 (빌드 속도 향상, 타입 충돌 방지)
+		"outDir": "./dist", // 컴파일된 JavaScript 파일이 출력될 디렉토리 지정
+		"sourceMap": true // `.map` 파일을 생성하여 JS 파일과 TS 원본 파일을 연결 (디버깅 시 브라우저나 IDE에서 원본 TS 코드 확인 가능)
+	},
+	"include": ["extends.ts"] // 컴파일에 포함할 파일(또는 폴더)을 지정 ("src/**/*" 등으로 폴더 전체 포함 가능)
+}
